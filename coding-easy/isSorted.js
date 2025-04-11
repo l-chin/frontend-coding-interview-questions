@@ -1,5 +1,20 @@
-/// solution
+/// question: write a function that checks if an array is sorted
+/// input: an array of numbers
+/// output: a boolean
+/// constraints:
+/// - the array is not empty
+/// - the array is not sorted
+/// - the array is not sorted in ascending order
+/// examples: 
+// isSorted([1, 2, 3, 4, 5]) // true
+// step by step:
+// 1. iterate through the array
+// 2. compare each element with the next one
+// 3. if the current element is greater than the next one, return false
+// 4. if the loop completes without returning false, return true
 
+
+/// solution 1: iterative
 function isSorted(array) {
   for (let i = 0; i < array.length; i++) {
     let current = array[i]
@@ -12,6 +27,55 @@ function isSorted(array) {
   return true
 }
 
+// practice:
+const isSortedTest1 = (array) => {
+  for (let index = 0; index < array.length; index++) {
+    if(array[index+ 1] && array[index] > array[index + 1]) return false
+  }
+  return true
+}
+// time complexity: O(n)
+// space complexity: O(1)
+
+// optimal solution: reduced one unnecessary iteration and comparison
+const isSortedTest2 = (array) => {
+ for (let index = 0; index < array.length - 1; index++) {
+  if(array[index] > array[index + 1]) return false
+ }
+ return true
+}
+// time complexity: O(n)
+// space complexity: O(1)
+
+// solution 3: using Array.every()
+const isSortedTest3 = (array) => {
+  return array.every((element, index) => {
+    return index === 0 || element >= array[index - 1]
+  })  
+}
+// time complexity: O(n)
+// space complexity: O(1)
+// Principle: The every() method tests whether all elements in the array pass the test implemented by the provided function. It returns a boolean value.
+// if return false, it will stop and return false immediately
+// otherwise, it all checks passed and then it will return true
+// pros: concise and readable
+// cons: less efficient than the optimal solution
+
+// solution 4: using reduce()
+const isSortedTest4 = (array) => {
+  return array.reduce((isSorted, element, index) => {
+    return isSorted && (index === 0 || element >= array[index - 1])
+  }, true)
+}
+// time complexity: O(n)
+// space complexity: O(1)
+// pros: concise and readable
+// cons: 
+// 1. less efficient than the optimal solution
+// 2. always iterate through the entire array, and won't stop early
+
+
+
 /// tests
 
 import { test } from 'ava'
@@ -19,3 +83,19 @@ import { test } from 'ava'
 test(t => t.is(isSorted([]), true))
 test(t => t.is(isSorted([-Infinity, -5, 0, 3, 9]), true))
 test(t => t.is(isSorted([3, 9, -3, 10]), false))
+
+test(t => t.is(isSortedTest1([]), true))
+test(t => t.is(isSortedTest1([-Infinity, -5, 0, 3, 9]), true))
+test(t => t.is(isSortedTest1([3, 9, -3, 10]), false))
+
+test(t => t.is(isSortedTest2([]), true))
+test(t => t.is(isSortedTest2([-Infinity, -5, 0, 3, 9]), true))
+test(t => t.is(isSortedTest2([3, 9, -3, 10]), false))
+
+test(t => t.is(isSortedTest3([]), true))
+test(t => t.is(isSortedTest3([-Infinity, -5, 0, 3, 9]), true))
+test(t => t.is(isSortedTest3([3, 9, -3, 10]), false))
+
+test(t => t.is(isSortedTest4([]), true))
+test(t => t.is(isSortedTest4([-Infinity, -5, 0, 3, 9]), true))
+test(t => t.is(isSortedTest4([3, 9, -3, 10]), false))
