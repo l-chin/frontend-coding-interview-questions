@@ -1,5 +1,19 @@
-/// solution
+// question: implement missing function
+// Takes an unsorted array of unique numbers 
+// (ie. no repeats) from 1 through some number n, 
+// and returns the missing number in the sequence 
+// (there are either no missing numbers, or exactly one missing number). 
+// Can you do it in O(N) time? Hint: There’s a clever formula you can use.
+// example:
+// missing([1, 4, 3]) // 2
+// step by step:
+// 1. sum the array
+// 2. calculate the expected sum of the array
+// 3. subtract the sum of the array from the expected sum
+// 4. return the difference
 
+
+/// solution
 function missing(array) {
 
   // sum the array, and keep track of the maximum number in it
@@ -25,6 +39,70 @@ function missing(array) {
   }
 
 }
+// time complexity: O(n)
+// space complexity: O(1)
+
+// practice:
+const missingTest1 = (arr) => {
+  if(arr.length === 0) return undefined
+
+  let sum = 0
+  let max = arr[0]
+  for (let index = 0; index < arr.length; index++) {
+    sum += arr[index]
+    if(arr[index] > max) max = arr[index]
+  }
+
+  let expectedSum = 0
+  for (let i = 0; i <= max; i++) {
+    expectedSum += i    
+  }
+  // let expectedSum = max * (max + 1) / 2
+  // 1+2+3+4+5
+  // 5+4+3+2+1
+  // 6+6+6+6+6 => 6 * 5
+  // result = (6*5) / 2
+  // (1 + max) * n / 2
+  // 
+  
+  const difference = expectedSum - sum
+  if(difference > 0) {
+    return difference
+  } else {
+    return undefined
+  }
+}
+
+// solution 2: exclusive or (XOR) 异域
+const missingTest2 = (arr) => {
+  if(arr.length === 0) return undefined
+
+  // find the max number in the array
+  let max = arr[0]
+  for (let index = 0; index < arr.length; index++) {
+    if(arr[index] > max) max = arr[index]
+  }
+
+  //  return undefined if the max number is not the length of the array
+  if(max === arr.length) return undefined
+
+  // xor for max
+  let maxXor = 0
+  for (let i = 0; i <= max; i++) {
+    maxXor ^= i
+  } 
+
+  // xor for arr
+  let arrXor = 0
+  for (let i = 0; i < arr.length; i++) {
+    arrXor ^= arr[i]
+  }
+
+  // xor for max and arr
+  let result = maxXor ^ arrXor
+  return result
+}
+
 
 /// tests
 
@@ -35,3 +113,16 @@ test(t => t.is(missing([1, 4, 3]), 2))
 test(t => t.is(missing([2, 3, 4]), 1))
 test(t => t.is(missing([5, 1, 4, 2]), 3))
 test(t => t.is(missing([1, 2, 3, 4]), undefined))
+
+test(t => t.is(missingTest1([]), undefined))
+test(t => t.is(missingTest1([1, 4, 3]), 2))
+test(t => t.is(missingTest1([2, 3, 4]), 1))
+test(t => t.is(missingTest1([5, 1, 4, 2]), 3))
+test(t => t.is(missingTest1([1, 2, 3, 4]), undefined))
+
+test(t => t.is(missingTest2([]), undefined))
+test(t => t.is(missingTest2([1, 4, 3]), 2))
+test(t => t.is(missingTest2([2, 3, 4]), 1))
+test(t => t.is(missingTest2([5, 1, 4, 2]), 3))
+test(t => t.is(missingTest2([1, 2, 3, 4]), undefined))
+
