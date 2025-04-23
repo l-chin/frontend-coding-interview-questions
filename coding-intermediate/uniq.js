@@ -19,6 +19,10 @@ function uniq(array) {
     return result.concat(current)
   }, [])
 }
+// time complexity: O(n)
+// space complexity: O(n)
+// since we are using the reduce method, the time complexity is O(n), because we are iterating through the array once
+// since we are using the reduce method, the space complexity is O(n), because we are creating a new array
 
 /// tests
 

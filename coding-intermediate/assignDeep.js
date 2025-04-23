@@ -1,3 +1,6 @@
+// question:
+// Implement a function that deeply assigns the properties of one or more source objects to a target object.
+
 /// solution
 
 function assignDeep(target, ...sources) {
